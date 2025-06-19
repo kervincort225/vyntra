@@ -1,6 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vyntra
+
+A business technology platform built with Next.js.
+
+## About
+
+Vyntra is a comprehensive business technology platform offering services in:
+- **Licitaciones** (Bidding)
+- **Automatización** (Automation)
+- **SaaS Solutions**
+- **Software Development**
 
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 First, run the development server:
 
