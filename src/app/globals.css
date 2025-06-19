@@ -26,6 +26,7 @@ body {
   font-family: 'Poppins', Arial, sans-serif;
 }
 
+/* Animaciones de entrada */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -39,9 +40,95 @@ body {
   }
 }
 
+/* Animación del header */
+.header-slide-down {
+  opacity: 0;
+  transform: translateY(-100%);
+  animation: slideDown 0.8s ease-out forwards;
+}
+
+@keyframes slideDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animaciones del hero con delays */
+.hero-title {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: heroTitleIn 1s ease-out 0.3s forwards;
+}
+
+.hero-subtitle {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+}
+
+.hero-buttons {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out 0.9s forwards;
+}
+
+@keyframes heroTitleIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animaciones de servicios escalonadas */
+.service-card-1 {
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+  animation: serviceCardIn 0.6s ease-out 1.2s forwards;
+}
+
+.service-card-2 {
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+  animation: serviceCardIn 0.6s ease-out 1.4s forwards;
+}
+
+.service-card-3 {
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+  animation: serviceCardIn 0.6s ease-out 1.6s forwards;
+}
+
+.service-card-4 {
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+  animation: serviceCardIn 0.6s ease-out 1.8s forwards;
+}
+
+@keyframes serviceCardIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animación de secciones con scroll reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animaciones existentes mejoradas */
 .animate-gradient {
   animation: gradientBG 8s ease-in-out infinite alternate;
 }
+
 @keyframes gradientBG {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(30deg); }
@@ -50,6 +137,7 @@ body {
 .animate-float {
   animation: float 3s ease-in-out infinite alternate;
 }
+
 @keyframes float {
   0% { transform: translateY(0); }
   100% { transform: translateY(-16px); }
@@ -57,4 +145,215 @@ body {
 
 .animate-fadein {
   animation: fadeInUp 1.2s cubic-bezier(.39,.575,.565,1) both;
+}
+
+/* Animación de pulso para botones */
+.pulse-on-hover:hover {
+  animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Animación de bounce suave para iconos */
+.bounce-icon {
+  animation: bounceIcon 2s ease-in-out infinite;
+}
+
+@keyframes bounceIcon {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* Nuevas animaciones para experiencia premium */
+.animate-gradient-advanced {
+  animation: gradientAdvanced 12s ease-in-out infinite;
+}
+
+@keyframes gradientAdvanced {
+  0%, 100% { 
+    filter: hue-rotate(0deg) brightness(1);
+    transform: scale(1);
+  }
+  25% { 
+    filter: hue-rotate(90deg) brightness(1.1);
+    transform: scale(1.05);
+  }
+  50% { 
+    filter: hue-rotate(180deg) brightness(0.9);
+    transform: scale(0.95);
+  }
+  75% { 
+    filter: hue-rotate(270deg) brightness(1.1);
+    transform: scale(1.05);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.animate-float-reverse {
+  animation: floatReverse 8s ease-in-out infinite;
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(20px) rotate(-180deg); }
+}
+
+/* Animaciones para navegación */
+.nav-item {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: navItemIn 0.5s ease-out forwards;
+}
+
+@keyframes navItemIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animaciones para indicadores de confianza */
+.trust-indicators {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: trustIn 1s ease-out 2.5s forwards;
+}
+
+@keyframes trustIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.counter-animate {
+  display: inline-block;
+  animation: counterPulse 2s ease-in-out infinite;
+}
+
+@keyframes counterPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Mejoras para formularios */
+.form-field-success {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.form-field-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Animaciones de carga */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Mejoras para el chatbot */
+.chat-message-user {
+  animation: messageSlideInRight 0.3s ease-out;
+}
+
+.chat-message-bot {
+  animation: messageSlideInLeft 0.3s ease-out;
+}
+
+@keyframes messageSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes messageSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Efectos de hover mejorados */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Animaciones de scroll más suaves */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Efectos de partículas para el fondo */
+@keyframes particleFloat {
+  0%, 100% { 
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.3;
+  }
+  25% { 
+    transform: translateY(-20px) translateX(10px) rotate(90deg);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: translateY(-10px) translateX(-15px) rotate(180deg);
+    opacity: 0.2;
+  }
+  75% { 
+    transform: translateY(-30px) translateX(5px) rotate(270deg);
+    opacity: 0.8;
+  }
+}
+
+.particle {
+  animation: particleFloat 15s ease-in-out infinite;
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

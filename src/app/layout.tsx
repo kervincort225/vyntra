@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Header fijo */}
-        <header className="w-full flex items-center justify-between px-6 py-1 bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 z-40">
+        {/* <header className="w-full flex items-center justify-between px-6 py-1 bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 z-40">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/Vyntra.png" alt="Vyntra logo" width={120} height={40} priority />
           </Link>
@@ -39,7 +39,7 @@ export default function RootLayout({
               Iniciar sesión
             </button>
           </Link>
-        </header>
+        </header> */}
         <main className="pt-20">{children}</main>
       </body>
     </html>
