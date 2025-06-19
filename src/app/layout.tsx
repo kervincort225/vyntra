@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +25,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {/* Header fijo */}
+        <header className="w-full flex items-center justify-between px-6 py-1 bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 z-40">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/Vyntra.png" alt="Vyntra logo" width={120} height={40} priority />
+          </Link>
+          <Link href="/login">
+            <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full px-6 py-2 font-semibold shadow hover:scale-105 transition-transform">
+              Iniciar sesión
+            </button>
+          </Link>
+        </header>
+        <main className="pt-20">{children}</main>
       </body>
     </html>
   );
