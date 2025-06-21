@@ -8,7 +8,7 @@ import emailjs from '@emailjs/browser';
 
 // Configuración temporal hardcodeada
 const EMAILJS_CONFIG = {
-  SERVICE_ID: 'service_w3gz69j',
+  SERVICE_ID: 'service_w3gz69i',
   TEMPLATE_ID_CONTACT: 'template_87ecy4q', 
   TEMPLATE_ID_CHAT: 'template_j69lvrm',
   PUBLIC_KEY: 'yTG32yzqK0CjL3qXC'
