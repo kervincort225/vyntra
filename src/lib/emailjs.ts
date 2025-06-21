@@ -8,10 +8,10 @@ import emailjs from '@emailjs/browser';
 
 // Configuración temporal hardcodeada
 const EMAILJS_CONFIG = {
-  SERVICE_ID: 'service_w3gz69i',
+  SERVICE_ID: 'service_w3gz69j',
   TEMPLATE_ID_CONTACT: 'template_87ecy4q', 
-  TEMPLATE_ID_CHAT: 'template_j69lvrm', // Usar el mismo template por ahora
-  PUBLIC_KEY: 'yTG32yzqK0CjL3qXC' // Reemplazar con tu public key real
+  TEMPLATE_ID_CHAT: 'template_j69lvrm',
+  PUBLIC_KEY: 'yTG32yzqK0CjL3qXC'
 };
 
 // Inicializar EmailJS
@@ -75,7 +75,4 @@ export const sendChatConversation = async (
     console.error('❌ Error enviando conversación del chat:', error);
     return { success: false, error };
   }
-};
-
-// Función para verificar configuración (exportada)
-export { verifyEmailJSConfig }; 
+}; 
