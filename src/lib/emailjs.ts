@@ -3,53 +3,19 @@
 
 import emailjs from '@emailjs/browser';
 
-// Función para obtener configuración de EmailJS
-const getEmailJSConfig = () => {
-  // Intentar leer desde JSON (producción)
-  if (process.env.EMAILJS_CONFIG) {
-    try {
-      return JSON.parse(process.env.EMAILJS_CONFIG);
-    } catch (error) {
-      console.error('Error parsing EMAILJS_CONFIG JSON:', error);
-      return {};
-    }
-  }
-  
-  // Fallback a variables separadas (desarrollo)
-  return {
-    service_id: process.env.EMAILJS_SERVICE_ID || process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-    template_contact: process.env.EMAILJS_TEMPLATE_CONTACT || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CONTACT || '',
-    template_chat: process.env.EMAILJS_TEMPLATE_CHAT || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CHAT || '',
-    public_key: process.env.EMAILJS_PUBLIC_KEY || process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
-  };
-};
+// EmailJS - Configuración temporal hardcodeada
+// TODO: Mover a variables de entorno seguras después
 
-// Obtener configuración
-const emailjsConfig = getEmailJSConfig();
-
-// Configuración de EmailJS
+// Configuración temporal hardcodeada
 const EMAILJS_CONFIG = {
-  SERVICE_ID: emailjsConfig.service_id,
-  TEMPLATE_ID_CONTACT: emailjsConfig.template_contact,
-  TEMPLATE_ID_CHAT: emailjsConfig.template_chat,
-  PUBLIC_KEY: emailjsConfig.public_key
+  SERVICE_ID: 'service_w3gz69i',
+  TEMPLATE_ID_CONTACT: 'template_87ecy4q', 
+  TEMPLATE_ID_CHAT: 'template_j69lvrm', // Usar el mismo template por ahora
+  PUBLIC_KEY: 'yTG32yzqK0CjL3qXC' // Reemplazar con tu public key real
 };
 
-// Inicializar EmailJS solo si está configurado
-if (EMAILJS_CONFIG.PUBLIC_KEY && EMAILJS_CONFIG.PUBLIC_KEY !== '') {
-  emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-}
-
-// Función para verificar configuración
-const verifyEmailJSConfig = () => {
-  const isConfigured = 
-    EMAILJS_CONFIG.SERVICE_ID !== '' &&
-    EMAILJS_CONFIG.TEMPLATE_ID_CONTACT !== '' &&
-    EMAILJS_CONFIG.TEMPLATE_ID_CHAT !== '' &&
-    EMAILJS_CONFIG.PUBLIC_KEY !== '';
-  
-  return isConfigured;
-};
+// Inicializar EmailJS
+emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
 
 // Función para enviar formulario de contacto
 export const sendContactForm = async (formData: {
@@ -58,14 +24,8 @@ export const sendContactForm = async (formData: {
   service: string;
   message: string;
 }) => {
-  // Verificar si EmailJS está configurado
-  if (!verifyEmailJSConfig()) {
-    console.log('📧 EmailJS no configurado - usando modo simulación');
-    // Simular delay de envío
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return { success: false, error: 'EmailJS no configurado' };
-  }
-
+  console.log('📧 Enviando formulario de contacto...');
+  
   try {
     const result = await emailjs.send(
       EMAILJS_CONFIG.SERVICE_ID,
@@ -78,9 +38,10 @@ export const sendContactForm = async (formData: {
         to_email: 'vyntrachile@gmail.com'
       }
     );
-    return { success: true, result };
+    console.log('✅ Email de contacto enviado exitosamente:', result);
+    return { success: true, result, real: true };
   } catch (error) {
-    console.error('Error enviando email de contacto:', error);
+    console.error('❌ Error enviando email de contacto:', error);
     return { success: false, error };
   }
 };
@@ -90,14 +51,8 @@ export const sendChatConversation = async (
   userEmail: string,
   messages: Array<{ text: string; isUser: boolean; timestamp: Date }>
 ) => {
-  // Verificar si EmailJS está configurado
-  if (!verifyEmailJSConfig()) {
-    console.log('💬 EmailJS no configurado - usando modo simulación para chat');
-    // Simular delay de envío
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return { success: false, error: 'EmailJS no configurado' };
-  }
-
+  console.log('💬 Enviando conversación del chat...');
+  
   try {
     // Formatear conversación
     const conversation = messages.map(msg => 
@@ -114,9 +69,10 @@ export const sendChatConversation = async (
         timestamp: new Date().toLocaleString()
       }
     );
-    return { success: true, result };
+    console.log('✅ Conversación enviada exitosamente:', result);
+    return { success: true, result, real: true };
   } catch (error) {
-    console.error('Error enviando conversación del chat:', error);
+    console.error('❌ Error enviando conversación del chat:', error);
     return { success: false, error };
   }
 };
