@@ -27,6 +27,13 @@ const sendEmailViaEmailJS = async (serviceId: string, templateId: string, templa
     template_params: templateParams
   };
 
+  console.log('📧 Enviando email con configuración:', {
+    service_id: serviceId.substring(0, 10) + '...',
+    template_id: templateId.substring(0, 10) + '...',
+    user_id: publicKey.substring(0, 10) + '...',
+    url: url
+  });
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -35,8 +42,20 @@ const sendEmailViaEmailJS = async (serviceId: string, templateId: string, templa
     body: JSON.stringify(data)
   });
 
+  console.log('📧 Respuesta de EmailJS:', {
+    status: response.status,
+    statusText: response.statusText,
+    ok: response.ok
+  });
+
   if (!response.ok) {
-    throw new Error(`EmailJS API error: ${response.status}`);
+    const errorText = await response.text();
+    console.error('❌ Error detallado de EmailJS:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText
+    });
+    throw new Error(`EmailJS API error: ${response.status} - ${errorText}`);
   }
 
   return await response.text();
