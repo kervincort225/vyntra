@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import emailjs from '@emailjs/browser';
 
 // Configuración de EmailJS usando variables de entorno del servidor
 const EMAILJS_CONFIG = {
@@ -9,17 +8,38 @@ const EMAILJS_CONFIG = {
   PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
 };
 
-// Inicializar EmailJS
-if (EMAILJS_CONFIG.PUBLIC_KEY) {
-  emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-}
-
 // Verificar configuración
 const isConfigured = () => {
   return EMAILJS_CONFIG.SERVICE_ID && 
          EMAILJS_CONFIG.TEMPLATE_ID_CONTACT && 
          EMAILJS_CONFIG.TEMPLATE_ID_CHAT && 
          EMAILJS_CONFIG.PUBLIC_KEY;
+};
+
+// Función para enviar email usando fetch (compatible con servidor)
+const sendEmailViaEmailJS = async (serviceId: string, templateId: string, templateParams: any, publicKey: string) => {
+  const url = 'https://api.emailjs.com/api/v1.0/email/send';
+  
+  const data = {
+    service_id: serviceId,
+    template_id: templateId,
+    user_id: publicKey,
+    template_params: templateParams
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    throw new Error(`EmailJS API error: ${response.status}`);
+  }
+
+  return await response.text();
 };
 
 export async function POST(request: NextRequest) {
@@ -29,6 +49,12 @@ export async function POST(request: NextRequest) {
 
     // Verificar configuración
     if (!isConfigured()) {
+      console.error('EmailJS no configurado:', {
+        SERVICE_ID: !!EMAILJS_CONFIG.SERVICE_ID,
+        TEMPLATE_ID_CONTACT: !!EMAILJS_CONFIG.TEMPLATE_ID_CONTACT,
+        TEMPLATE_ID_CHAT: !!EMAILJS_CONFIG.TEMPLATE_ID_CHAT,
+        PUBLIC_KEY: !!EMAILJS_CONFIG.PUBLIC_KEY
+      });
       return NextResponse.json(
         { success: false, error: 'EmailJS no configurado en el servidor' },
         { status: 500 }
@@ -39,7 +65,7 @@ export async function POST(request: NextRequest) {
       // Enviar formulario de contacto
       const { name, email, service, message } = data;
       
-      const result = await emailjs.send(
+      const result = await sendEmailViaEmailJS(
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID_CONTACT,
         {
@@ -48,9 +74,11 @@ export async function POST(request: NextRequest) {
           service_type: service,
           message: message,
           to_email: 'vyntrachile@gmail.com'
-        }
+        },
+        EMAILJS_CONFIG.PUBLIC_KEY
       );
 
+      console.log('✅ Email de contacto enviado exitosamente');
       return NextResponse.json({ success: true, result });
 
     } else if (type === 'chat') {
@@ -62,7 +90,7 @@ export async function POST(request: NextRequest) {
         `${msg.isUser ? '👤 Usuario' : '🤖 Vyntra'} (${new Date(msg.timestamp).toLocaleTimeString()}): ${msg.text}`
       ).join('\n\n');
 
-      const result = await emailjs.send(
+      const result = await sendEmailViaEmailJS(
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID_CHAT,
         {
@@ -70,9 +98,11 @@ export async function POST(request: NextRequest) {
           conversation: conversation,
           to_email: 'vyntrachile@gmail.com',
           timestamp: new Date().toLocaleString()
-        }
+        },
+        EMAILJS_CONFIG.PUBLIC_KEY
       );
 
+      console.log('✅ Conversación de chat enviada exitosamente');
       return NextResponse.json({ success: true, result });
 
     } else {
@@ -83,9 +113,9 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Error enviando email:', error);
+    console.error('❌ Error enviando email:', error);
     return NextResponse.json(
-      { success: false, error: 'Error interno del servidor' },
+      { success: false, error: `Error interno del servidor: ${error}` },
       { status: 500 }
     );
   }
