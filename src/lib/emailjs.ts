@@ -1,40 +1,5 @@
-import emailjs from '@emailjs/browser';
-
-// Configuración de EmailJS usando variables de entorno
-const EMAILJS_CONFIG = {
-  SERVICE_ID: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-  TEMPLATE_ID_CONTACT: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CONTACT || '',
-  TEMPLATE_ID_CHAT: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CHAT || '',
-  PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
-};
-
-// Función para verificar configuración (definida antes de usarla)
-const verifyEmailJSConfig = () => {
-  const isConfigured = 
-    EMAILJS_CONFIG.SERVICE_ID !== '' &&
-    EMAILJS_CONFIG.TEMPLATE_ID_CONTACT !== '' &&
-    EMAILJS_CONFIG.TEMPLATE_ID_CHAT !== '' &&
-    EMAILJS_CONFIG.PUBLIC_KEY !== '';
-  
-  return isConfigured;
-};
-
-// Debug: Mostrar configuración (sin revelar claves completas)
-console.log('🔍 EmailJS Debug Config:', {
-  SERVICE_ID: EMAILJS_CONFIG.SERVICE_ID ? `${EMAILJS_CONFIG.SERVICE_ID.substring(0, 8)}...` : 'NO CONFIGURADO',
-  TEMPLATE_ID_CONTACT: EMAILJS_CONFIG.TEMPLATE_ID_CONTACT ? `${EMAILJS_CONFIG.TEMPLATE_ID_CONTACT.substring(0, 8)}...` : 'NO CONFIGURADO',
-  TEMPLATE_ID_CHAT: EMAILJS_CONFIG.TEMPLATE_ID_CHAT ? `${EMAILJS_CONFIG.TEMPLATE_ID_CHAT.substring(0, 8)}...` : 'NO CONFIGURADO',
-  PUBLIC_KEY: EMAILJS_CONFIG.PUBLIC_KEY ? `${EMAILJS_CONFIG.PUBLIC_KEY.substring(0, 8)}...` : 'NO CONFIGURADO',
-  isConfigured: verifyEmailJSConfig()
-});
-
-// Inicializar EmailJS solo si está configurado
-if (EMAILJS_CONFIG.PUBLIC_KEY && EMAILJS_CONFIG.PUBLIC_KEY !== '') {
-  emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-  console.log('✅ EmailJS inicializado correctamente');
-} else {
-  console.warn('⚠️ EmailJS no se pudo inicializar - PUBLIC_KEY no configurado');
-}
+// Funciones para envío de emails a través del API endpoint
+// Más seguro: las credenciales están en el servidor, no expuestas al cliente
 
 // Función para enviar formulario de contacto
 export const sendContactForm = async (formData: {
@@ -43,29 +8,22 @@ export const sendContactForm = async (formData: {
   service: string;
   message: string;
 }) => {
-  // Verificar si EmailJS está configurado
-  if (!verifyEmailJSConfig()) {
-    console.log('📧 EmailJS no configurado - usando modo simulación');
-    // Simular delay de envío
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return { success: false, error: 'EmailJS no configurado' };
-  }
-
   try {
-    const result = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATE_ID_CONTACT,
-      {
-        from_name: formData.name,
-        from_email: formData.email,
-        service_type: formData.service,
-        message: formData.message,
-        to_email: 'vyntrachile@gmail.com'
-      }
-    );
-    return { success: true, result };
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'contact',
+        data: formData
+      })
+    });
+
+    const result = await response.json();
+    return result;
   } catch (error) {
-    console.error('Error enviando email de contacto:', error);
+    console.error('Error enviando formulario de contacto:', error);
     return { success: false, error };
   }
 };
@@ -75,36 +33,45 @@ export const sendChatConversation = async (
   userEmail: string,
   messages: Array<{ text: string; isUser: boolean; timestamp: Date }>
 ) => {
-  // Verificar si EmailJS está configurado
-  if (!verifyEmailJSConfig()) {
-    console.log('💬 EmailJS no configurado - usando modo simulación para chat');
-    // Simular delay de envío
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return { success: false, error: 'EmailJS no configurado' };
-  }
-
   try {
-    // Formatear conversación
-    const conversation = messages.map(msg => 
-      `${msg.isUser ? '👤 Usuario' : '🤖 Vyntra'} (${msg.timestamp.toLocaleTimeString()}): ${msg.text}`
-    ).join('\n\n');
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'chat',
+        data: {
+          userEmail,
+          messages
+        }
+      })
+    });
 
-    const result = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATE_ID_CHAT,
-      {
-        user_email: userEmail,
-        conversation: conversation,
-        to_email: 'vyntrachile@gmail.com',
-        timestamp: new Date().toLocaleString()
-      }
-    );
-    return { success: true, result };
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error('Error enviando conversación del chat:', error);
     return { success: false, error };
   }
 };
 
-// Función para verificar configuración (exportada)
-export { verifyEmailJSConfig }; 
+// Función para verificar si el servicio está disponible
+export const verifyEmailJSConfig = async () => {
+  try {
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'test'
+      })
+    });
+    
+    // Si no es error 500, el servicio está configurado
+    return response.status !== 500;
+  } catch (error) {
+    return false;
+  }
+}; 

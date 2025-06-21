@@ -249,30 +249,23 @@ export default function Home() {
     setIsSubmitting(true);
     
     try {
-      // Intentar enviar con EmailJS
+      // Enviar con API endpoint seguro
       const result = await sendContactForm(formData);
       
       if (result.success) {
-        console.log('✅ Email enviado exitosamente:', result.result);
+        console.log('✅ Email enviado exitosamente');
         setSubmitSuccess(true);
         setFormData({ name: "", email: "", service: "", message: "" });
         setFormErrors({});
         setTimeout(() => setSubmitSuccess(false), 5000);
       } else {
-        // Si falla EmailJS, mostrar mensaje pero simular éxito
-        console.warn('⚠️ EmailJS no configurado correctamente, simulando envío');
-        setSubmitSuccess(true);
-        setFormData({ name: "", email: "", service: "", message: "" });
-        setFormErrors({});
-        setTimeout(() => setSubmitSuccess(false), 5000);
+        console.error('❌ Error enviando email:', result.error);
+        // Mostrar error al usuario
+        alert('Hubo un problema enviando el mensaje. Por favor intenta nuevamente.');
       }
     } catch (error) {
       console.error('❌ Error en envío:', error);
-      // Simular éxito aunque falle para no romper UX
-      setSubmitSuccess(true);
-      setFormData({ name: "", email: "", service: "", message: "" });
-      setFormErrors({});
-      setTimeout(() => setSubmitSuccess(false), 5000);
+      alert('Hubo un problema enviando el mensaje. Por favor intenta nuevamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -291,13 +284,13 @@ export default function Home() {
     setIsSendingChat(true);
     
     try {
-      // Intentar enviar con EmailJS
+      // Enviar con API endpoint seguro
       const result = await sendChatConversation(chatEmail, chatMessages);
       
       if (result.success) {
-        console.log('✅ Conversación enviada exitosamente:', result.result);
+        console.log('✅ Conversación enviada exitosamente');
       } else {
-        console.warn('⚠️ EmailJS no configurado correctamente, simulando envío');
+        console.error('❌ Error enviando conversación:', result.error);
       }
     } catch (error) {
       console.error('❌ Error enviando conversación:', error);
