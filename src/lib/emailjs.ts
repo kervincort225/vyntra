@@ -8,9 +8,32 @@ const EMAILJS_CONFIG = {
   PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
 };
 
+// Función para verificar configuración (definida antes de usarla)
+const verifyEmailJSConfig = () => {
+  const isConfigured = 
+    EMAILJS_CONFIG.SERVICE_ID !== '' &&
+    EMAILJS_CONFIG.TEMPLATE_ID_CONTACT !== '' &&
+    EMAILJS_CONFIG.TEMPLATE_ID_CHAT !== '' &&
+    EMAILJS_CONFIG.PUBLIC_KEY !== '';
+  
+  return isConfigured;
+};
+
+// Debug: Mostrar configuración (sin revelar claves completas)
+console.log('🔍 EmailJS Debug Config:', {
+  SERVICE_ID: EMAILJS_CONFIG.SERVICE_ID ? `${EMAILJS_CONFIG.SERVICE_ID.substring(0, 8)}...` : 'NO CONFIGURADO',
+  TEMPLATE_ID_CONTACT: EMAILJS_CONFIG.TEMPLATE_ID_CONTACT ? `${EMAILJS_CONFIG.TEMPLATE_ID_CONTACT.substring(0, 8)}...` : 'NO CONFIGURADO',
+  TEMPLATE_ID_CHAT: EMAILJS_CONFIG.TEMPLATE_ID_CHAT ? `${EMAILJS_CONFIG.TEMPLATE_ID_CHAT.substring(0, 8)}...` : 'NO CONFIGURADO',
+  PUBLIC_KEY: EMAILJS_CONFIG.PUBLIC_KEY ? `${EMAILJS_CONFIG.PUBLIC_KEY.substring(0, 8)}...` : 'NO CONFIGURADO',
+  isConfigured: verifyEmailJSConfig()
+});
+
 // Inicializar EmailJS solo si está configurado
 if (EMAILJS_CONFIG.PUBLIC_KEY && EMAILJS_CONFIG.PUBLIC_KEY !== '') {
   emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+  console.log('✅ EmailJS inicializado correctamente');
+} else {
+  console.warn('⚠️ EmailJS no se pudo inicializar - PUBLIC_KEY no configurado');
 }
 
 // Función para enviar formulario de contacto
@@ -83,13 +106,5 @@ export const sendChatConversation = async (
   }
 };
 
-// Función para verificar configuración
-export const verifyEmailJSConfig = () => {
-  const isConfigured = 
-    EMAILJS_CONFIG.SERVICE_ID !== '' &&
-    EMAILJS_CONFIG.TEMPLATE_ID_CONTACT !== '' &&
-    EMAILJS_CONFIG.TEMPLATE_ID_CHAT !== '' &&
-    EMAILJS_CONFIG.PUBLIC_KEY !== '';
-  
-  return isConfigured;
-}; 
+// Función para verificar configuración (exportada)
+export { verifyEmailJSConfig }; 
