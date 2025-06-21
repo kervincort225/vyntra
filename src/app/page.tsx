@@ -365,7 +365,7 @@ export default function Home() {
       {/* Header único con animación mejorada */}
       <header className="w-full flex items-center justify-between px-6 py-3 bg-white/90 backdrop-blur-xl shadow-sm fixed top-0 left-0 z-40 header-slide-down border-b border-white/20">
         <div className="flex items-center group">
-          <Image
+        <Image
             src="/Vyntra.png"
             alt="Vyntra"
             width={120}
