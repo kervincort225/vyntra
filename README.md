@@ -249,7 +249,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 This project uses Supabase with secure environment variable handling via Cloud Build. The application automatically falls back to mock data if database connection is not available.
 
-<!-- Test deploy with secure variables -->
+<!-- Test deploy with secure variables - Cloud Build configured ✅ -->
 
 ## 📁 **Estructura del Proyecto**
 
