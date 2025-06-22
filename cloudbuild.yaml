@@ -10,9 +10,6 @@ steps:
       - '--build-arg' 
       - 'NEXT_PUBLIC_SUPABASE_ANON_KEY=${_SUPABASE_KEY}'
       - '.'
-    env:
-      - 'NEXT_PUBLIC_SUPABASE_URL=${_SUPABASE_URL}'
-      - 'NEXT_PUBLIC_SUPABASE_ANON_KEY=${_SUPABASE_KEY}'
 
   # Push de la imagen
   - name: 'gcr.io/cloud-builders/docker'
@@ -34,7 +31,6 @@ substitutions:
   _SUPABASE_URL: 'https://pkavalqnlhcwzglaeehf.supabase.co'
   _SUPABASE_KEY: '' # Dejar vacío, se configura en el trigger
 
-availableSecrets:
-  secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/emailjs-config/versions/latest
-    env: 'EMAILJS_CONFIG' 
+# Configuración de logging para evitar errores
+options:
+  logging: CLOUD_LOGGING_ONLY 
