@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { sendContactForm, sendChatConversation } from "@/lib/emailjs";
+import { LeadService } from '@/lib/services/LeadService';
+import { LeadSource, LeadPriority } from '@/domain/entities/Lead';
 
 interface ChatMessage {
   id: number;
@@ -254,6 +256,28 @@ export default function Home() {
       
       if (result.success) {
         console.log('✅ Email enviado exitosamente');
+        
+        // NUEVO: Guardar lead en la base de datos
+        try {
+          const leadService = LeadService.getInstance();
+          await leadService.createLead({
+            name: formData.name,
+            email: formData.email,
+            source: LeadSource.FORM,
+            message: formData.message,
+            // Asignar valor estimado según el servicio
+            value: formData.service === 'licitaciones' ? 25000 : 
+                   formData.service === 'automatizacion' ? 20000 :
+                   formData.service === 'saas' ? 30000 : 15000,
+            priority: formData.message.toLowerCase().includes('urgente') ? 
+                     LeadPriority.HIGH : LeadPriority.MEDIUM
+          });
+          console.log('✅ Lead guardado en base de datos');
+        } catch (dbError) {
+          console.error('⚠️ No se pudo guardar en BD, pero el email se envió:', dbError);
+          // No bloqueamos el flujo si falla la BD
+        }
+        
         setSubmitSuccess(true);
         setFormData({ name: "", email: "", service: "", message: "" });
         setFormErrors({});
@@ -289,6 +313,27 @@ export default function Home() {
       
       if (result.success) {
         console.log('✅ Conversación enviada exitosamente');
+        
+        // NUEVO: Guardar lead del chatbot en la base de datos
+        try {
+          const leadService = LeadService.getInstance();
+          const conversationText = chatMessages
+            .filter(msg => msg.isUser)
+            .map(msg => msg.text)
+            .join(' ');
+          
+          await leadService.createLead({
+            name: 'Usuario del Chat',
+            email: chatEmail,
+            source: LeadSource.CHATBOT,
+            message: conversationText || 'Conversación desde chatbot',
+            priority: LeadPriority.HIGH, // Chatbot siempre es alta prioridad
+            value: 20000 // Valor estimado por defecto para leads del chat
+          });
+          console.log('✅ Lead del chatbot guardado en base de datos');
+        } catch (dbError) {
+          console.error('⚠️ No se pudo guardar lead del chat en BD:', dbError);
+        }
       } else {
         console.error('❌ Error enviando conversación:', result.error);
       }

@@ -1,22 +1,7 @@
 "use client";
-import { useState } from "react";
-
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  company?: string;
-  source: 'chatbot' | 'form' | 'referral' | 'social' | 'direct';
-  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'converted' | 'lost';
-  date: string;
-  message: string;
-  value?: string;
-  priority: 'high' | 'medium' | 'low';
-  assignedTo?: string;
-  lastContact?: string;
-  notes?: string;
-}
+import { useState, useEffect } from "react";
+import { LeadService } from '@/lib/services/LeadService';
+import { Lead, LeadStatus, LeadSource, LeadPriority } from '@/domain/entities/Lead';
 
 const mockLeads: Lead[] = [
   {
@@ -25,14 +10,15 @@ const mockLeads: Lead[] = [
     email: 'carlos@empresa.com',
     phone: '+56 9 1234 5678',
     company: 'Empresa Tecnológica',
-    source: 'chatbot',
-    status: 'new',
-    date: '2024-01-25',
+    source: LeadSource.CHATBOT,
+    status: LeadStatus.NEW,
     message: 'Interesado en automatización de procesos para su empresa. Necesita cotización urgente.',
-    value: '$15,000',
-    priority: 'high',
+    value: 15000,
+    priority: LeadPriority.HIGH,
     assignedTo: 'Juan Pérez',
-    notes: 'Cliente potencial muy interesado, seguir en 24h'
+    notes: 'Cliente potencial muy interesado, seguir en 24h',
+    createdAt: new Date('2024-01-25'),
+    updatedAt: new Date('2024-01-25')
   },
   {
     id: '2',
@@ -40,15 +26,16 @@ const mockLeads: Lead[] = [
     email: 'ana@negocio.cl',
     phone: '+56 9 8765 4321',
     company: 'Negocio Digital',
-    source: 'form',
-    status: 'contacted',
-    date: '2024-01-24',
+    source: LeadSource.FORM,
+    status: LeadStatus.CONTACTED,
     message: 'Necesita cotización para desarrollo de SaaS para su negocio',
-    value: '$25,000',
-    priority: 'high',
+    value: 25000,
+    priority: LeadPriority.HIGH,
     assignedTo: 'María García',
-    lastContact: '2024-01-25',
-    notes: 'Reunión programada para el viernes'
+    lastContact: new Date('2024-01-25'),
+    notes: 'Reunión programada para el viernes',
+    createdAt: new Date('2024-01-24'),
+    updatedAt: new Date('2024-01-25')
   },
   {
     id: '3',
@@ -56,30 +43,32 @@ const mockLeads: Lead[] = [
     email: 'luis@startup.com',
     phone: '+56 9 5555 1234',
     company: 'StartupTech',
-    source: 'referral',
-    status: 'qualified',
-    date: '2024-01-23',
+    source: LeadSource.REFERRAL,
+    status: LeadStatus.QUALIFIED,
     message: 'Startup busca desarrollo completo de plataforma web',
-    value: '$35,000',
-    priority: 'medium',
+    value: 35000,
+    priority: LeadPriority.MEDIUM,
     assignedTo: 'Carlos Ruiz',
-    lastContact: '2024-01-24',
-    notes: 'Presupuesto confirmado, esperando decisión'
+    lastContact: new Date('2024-01-24'),
+    notes: 'Presupuesto confirmado, esperando decisión',
+    createdAt: new Date('2024-01-23'),
+    updatedAt: new Date('2024-01-24')
   },
   {
     id: '4',
     name: 'Patricia Silva',
     email: 'patricia@consultora.com',
     company: 'Consultora Legal',
-    source: 'social',
-    status: 'proposal',
-    date: '2024-01-22',
+    source: LeadSource.SOCIAL,
+    status: LeadStatus.PROPOSAL,
     message: 'Interesada en sistema de gestión de casos legales',
-    value: '$18,000',
-    priority: 'medium',
+    value: 18000,
+    priority: LeadPriority.MEDIUM,
     assignedTo: 'Ana López',
-    lastContact: '2024-01-23',
-    notes: 'Propuesta enviada, esperando respuesta'
+    lastContact: new Date('2024-01-23'),
+    notes: 'Propuesta enviada, esperando respuesta',
+    createdAt: new Date('2024-01-22'),
+    updatedAt: new Date('2024-01-23')
   },
   {
     id: '5',
@@ -87,35 +76,37 @@ const mockLeads: Lead[] = [
     email: 'roberto@retail.cl',
     phone: '+56 9 7777 8888',
     company: 'Retail Solutions',
-    source: 'direct',
-    status: 'converted',
-    date: '2024-01-20',
+    source: LeadSource.DIRECT,
+    status: LeadStatus.CONVERTED,
     message: 'Necesita e-commerce completo con inventario',
-    value: '$22,000',
-    priority: 'low',
+    value: 22000,
+    priority: LeadPriority.LOW,
     assignedTo: 'Pedro Martínez',
-    lastContact: '2024-01-22',
-    notes: 'Proyecto iniciado exitosamente'
+    lastContact: new Date('2024-01-22'),
+    notes: 'Proyecto iniciado exitosamente',
+    createdAt: new Date('2024-01-20'),
+    updatedAt: new Date('2024-01-22')
   },
   {
     id: '6',
     name: 'Carmen Vega',
     email: 'carmen@salud.com',
     company: 'Centro de Salud',
-    source: 'form',
-    status: 'lost',
-    date: '2024-01-18',
+    source: LeadSource.FORM,
+    status: LeadStatus.LOST,
     message: 'Sistema de gestión de pacientes',
-    value: '$12,000',
-    priority: 'low',
+    value: 12000,
+    priority: LeadPriority.LOW,
     assignedTo: 'Sofia Torres',
-    lastContact: '2024-01-20',
-    notes: 'Decidió por otra opción'
+    lastContact: new Date('2024-01-20'),
+    notes: 'Decidió por otra opción',
+    createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-20')
   }
 ];
 
 export default function LeadsPage() {
-  const [leads] = useState<Lead[]>(mockLeads);
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [sourceFilter, setSourceFilter] = useState<string>('all');
@@ -123,6 +114,27 @@ export default function LeadsPage() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [newNote, setNewNote] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const leadService = LeadService.getInstance();
+
+  // Cargar leads al iniciar
+  useEffect(() => {
+    loadLeads();
+  }, []);
+
+  const loadLeads = async () => {
+    try {
+      setIsLoading(true);
+      const dbLeads = await leadService.getAllLeads();
+      setLeads(dbLeads);
+    } catch (error) {
+      console.error('Error cargando leads:', error);
+      // Si falla, usar datos mock como fallback
+      setLeads(mockLeads as any);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredLeads = leads.filter(lead => {
     const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -262,7 +274,7 @@ export default function LeadsPage() {
             <div>
               <p className="text-sm text-gray-600">Valor Total</p>
               <p className="text-2xl font-bold text-emerald-600">
-                ${leads.reduce((sum, lead) => sum + (parseInt(lead.value?.replace(/[$,]/g, '') || '0')), 0).toLocaleString()}
+                ${leads.reduce((sum, lead) => sum + (lead.value || 0), 0).toLocaleString()}
               </p>
             </div>
             <div className="text-2xl">💰</div>
@@ -330,7 +342,18 @@ export default function LeadsPage() {
         </div>
       </div>
 
+      {/* Loading state */}
+      {isLoading && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12">
+          <div className="flex flex-col items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mb-4"></div>
+            <p className="text-gray-600">Cargando leads...</p>
+          </div>
+        </div>
+      )}
+
       {/* Leads Table */}
+      {!isLoading && (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -385,7 +408,7 @@ export default function LeadsPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {lead.value || '-'}
+                    {lead.value ? `$${lead.value.toLocaleString()}` : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(lead.priority)}`}>
@@ -417,8 +440,9 @@ export default function LeadsPage() {
           </table>
         </div>
       </div>
+      )}
 
-      {filteredLeads.length === 0 && (
+      {filteredLeads.length === 0 && !isLoading && (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">👥</div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">No se encontraron leads</h3>
@@ -460,7 +484,7 @@ export default function LeadsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Valor Estimado</label>
-                  <p className="text-gray-900">{selectedLead.value || '-'}</p>
+                  <p className="text-gray-900">{selectedLead.value ? `$${selectedLead.value.toLocaleString()}` : '-'}</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Fuente</label>
@@ -490,7 +514,7 @@ export default function LeadsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Último Contacto</label>
-                  <p className="text-gray-900">{selectedLead.lastContact || '-'}</p>
+                  <p className="text-gray-900">{selectedLead.lastContact ? new Date(selectedLead.lastContact).toLocaleDateString() : '-'}</p>
                 </div>
               </div>
 

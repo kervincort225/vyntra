@@ -1,7 +1,18 @@
 steps:
   # Build de la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/vyntra-web', '.']
+    args: 
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/vyntra-web'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_SUPABASE_URL=${_SUPABASE_URL}'
+      - '--build-arg' 
+      - 'NEXT_PUBLIC_SUPABASE_ANON_KEY=${_SUPABASE_KEY}'
+      - '.'
+    env:
+      - 'NEXT_PUBLIC_SUPABASE_URL=${_SUPABASE_URL}'
+      - 'NEXT_PUBLIC_SUPABASE_ANON_KEY=${_SUPABASE_KEY}'
 
   # Push de la imagen
   - name: 'gcr.io/cloud-builders/docker'
@@ -16,6 +27,12 @@ steps:
       - '--image=gcr.io/$PROJECT_ID/vyntra-web'
       - '--region=us-central1'
       - '--platform=managed'
+      - '--set-env-vars=NEXT_PUBLIC_SUPABASE_URL=${_SUPABASE_URL},NEXT_PUBLIC_SUPABASE_ANON_KEY=${_SUPABASE_KEY}'
+
+# Variables de sustitución (configurar en Cloud Build Trigger)
+substitutions:
+  _SUPABASE_URL: 'https://pkavalqnlhcwzglaeehf.supabase.co'
+  _SUPABASE_KEY: '' # Dejar vacío, se configura en el trigger
 
 availableSecrets:
   secretManager:
