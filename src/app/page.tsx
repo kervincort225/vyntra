@@ -422,7 +422,7 @@ export default function Home() {
         {/* Navegación desktop mejorada */}
         <nav className="hidden md:flex items-center space-x-8">
           {[
-            { href: "#servicios", label: "Servicios" },
+            { href: "/servicios", label: "Servicios" },
             { href: "#nosotros", label: "Nosotros" },
             { href: "#valores", label: "Valores" },
             { href: "#contacto", label: "Contacto" }
@@ -462,7 +462,7 @@ export default function Home() {
         <div className={`md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-gray-200 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
           <div className="px-6 py-4 space-y-3">
             {[
-              { href: "#servicios", label: "Servicios", icon: "🔧" },
+              { href: "/servicios", label: "Servicios", icon: "🔧" },
               { href: "#nosotros", label: "Nosotros", icon: "👥" },
               { href: "#valores", label: "Valores", icon: "⭐" },
               { href: "#contacto", label: "Contacto", icon: "📞" }
@@ -520,7 +520,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
             <a
-              href="#servicios"
+                              href="/servicios"
               className="px-8 py-3 border-2 border-purple-500 text-purple-500 rounded-full font-semibold hover:bg-purple-500 hover:text-white transition-all duration-300 pulse-on-hover shadow-lg hover:shadow-xl transform hover:scale-105 relative group"
             >
               <span className="flex items-center space-x-2">
@@ -602,6 +602,80 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-semibold mb-2">Software</h3>
             <p className="text-gray-700 text-sm">Soluciones personalizadas para digitalizar y potenciar tu empresa, con tecnología de vanguardia.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Banner CTA horizontal independiente - Ancho controlado */}
+      <section className="w-full py-16 px-4">
+        <div className="w-full max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl shadow-2xl overflow-hidden relative">
+            {/* Elementos decorativos de fondo */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-48 translate-x-48 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-white/5 rounded-full translate-y-40 -translate-x-40 blur-2xl" />
+            
+            <div className="relative z-10 flex flex-col lg:flex-row items-center min-h-[200px] lg:min-h-[240px]">
+              {/* Contenido principal - Lado izquierdo */}
+              <div className="flex-1 p-8 lg:p-12 text-white">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                  <div className="lg:flex-1">
+                    <div className="mb-3">
+                      <span className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium">
+                        <span>✨</span>
+                        <span>Precios Transparentes</span>
+                      </span>
+                    </div>
+                    <h3 className="text-2xl lg:text-3xl font-bold mb-3">
+                      ¿Necesitas algo más específico?
+                    </h3>
+                    <p className="text-white/90 text-base lg:text-lg mb-6 lg:mb-0 leading-relaxed max-w-2xl">
+                      Descubre nuestros <strong>4 paquetes completos</strong> con precios transparentes. 
+                      <span className="text-yellow-300 font-semibold"> Incluye automatizaciones</span> súper de moda.
+                    </p>
+                  </div>
+                  
+                  {/* Botones y precio - Lado derecho */}
+                  <div className="lg:ml-8 flex flex-col lg:flex-row items-center gap-6">
+                    <div className="text-center lg:text-right">
+                      <div className="text-white/80 text-sm">Proyectos desde</div>
+                      <div className="text-3xl lg:text-4xl font-bold text-yellow-300">$800K</div>
+                      <div className="text-white/80 text-sm">CLP</div>
+                    </div>
+                    <a
+                      href="/servicios"
+                      className="inline-flex items-center space-x-3 bg-white text-purple-600 font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group whitespace-nowrap"
+                    >
+                      <span>🚀</span>
+                      <span>Ver Todos los Servicios</span>
+                      <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+                
+                {/* Mini preview de servicios - Fila horizontal */}
+                <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
+                  <div className="flex items-center space-x-2 bg-white/15 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
+                    <span>🌐</span>
+                    <span className="text-white/90">Web $800K+</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-white/15 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
+                    <span>🚀</span>
+                    <span className="text-white/90">Sistema $1.8M+</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-white/15 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
+                    <span>⚡</span>
+                    <span className="text-white/90">Custom $3M+</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-white/15 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
+                    <span>🤖</span>
+                    <span className="text-white/90">Automatización</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -699,7 +773,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="font-semibold">Ubicación</h3>
-                <p className="text-gray-600">Santiago Centro, Jorge Cáceres 503</p>
+                <p className="text-gray-600">Chile, Jorge Cáceres 503</p>
               </div>
             </div>
           </div>
