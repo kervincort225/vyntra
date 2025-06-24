@@ -674,6 +674,171 @@ export default function Home() {
                     <span className="text-white/90">Automatización</span>
                   </div>
                 </div>
+                
+                {/* Destacado descuento PyME */}
+                <div className="mt-6 flex justify-center lg:justify-start">
+                  <div className="bg-yellow-400 text-yellow-900 px-6 py-3 rounded-full text-sm font-bold shadow-lg animate-pulse flex items-center space-x-2">
+                    <span>🏢</span>
+                    <span>¡PyMEs: 25% de descuento en todos los paquetes!</span>
+                    <span>🎯</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sección Descuento PyME */}
+      <section className="w-full py-16 px-4 bg-gradient-to-br from-yellow-50 to-orange-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center space-x-2 bg-yellow-200 text-yellow-800 px-4 py-2 rounded-full text-sm font-bold mb-4">
+              <span>🏢</span>
+              <span>OFERTA ESPECIAL PYMES</span>
+              <span>🎯</span>
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-gray-800">
+              ¿Eres una <span className="text-orange-600">PyME</span>?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Sabemos lo que es empezar. <strong>Aprovecha nuestro descuento especial</strong> para PyMEs chilenas 
+              y obtén tecnología de primer nivel a precios accesibles.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Lado izquierdo - Beneficios */}
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-orange-500">
+                <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center space-x-2">
+                  <span className="text-2xl">💰</span>
+                  <span>25% de Descuento</span>
+                </h3>
+                <p className="text-gray-600">
+                  En <strong>todos nuestros paquetes</strong> para PyMEs chilenas. 
+                  Sin letra chica, sin condiciones ocultas.
+                </p>
+              </div>
+              
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-500">
+                <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center space-x-2">
+                  <span className="text-2xl">🤝</span>
+                  <span>Facilidades de Pago</span>
+                </h3>
+                <p className="text-gray-600">
+                  <strong>Pago en cuotas</strong> para que no afecte tu flujo de caja. 
+                  Nos adaptamos a tus tiempos.
+                </p>
+              </div>
+              
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-500">
+                <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center space-x-2">
+                  <span className="text-2xl">🚀</span>
+                  <span>Soporte Premium</span>
+                </h3>
+                <p className="text-gray-600">
+                  <strong>6 meses gratis</strong> de soporte técnico premium. 
+                  Porque sabemos que necesitas acompañamiento.
+                </p>
+              </div>
+            </div>
+            
+            {/* Lado derecho - Precios con descuento */}
+            <div className="bg-white rounded-2xl p-8 shadow-xl border border-orange-200">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Precios PyME</h3>
+                <p className="text-gray-600">Con 25% de descuento aplicado</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <div>
+                    <span className="font-semibold text-gray-800">🌐 Web Profesional</span>
+                    <div className="text-xs text-gray-500">
+                      <span className="line-through">$800K - $1.2M</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-green-600">$600K - $900K</div>
+                    <div className="text-xs text-green-500">¡Ahorro $200K!</div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <div>
+                    <span className="font-semibold text-gray-800">🚀 Sistema Web</span>
+                    <div className="text-xs text-gray-500">
+                      <span className="line-through">$1.8M - $2.5M</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-green-600">$1.35M - $1.9M</div>
+                    <div className="text-xs text-green-500">¡Ahorro $600K!</div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <div>
+                    <span className="font-semibold text-gray-800">🤖 Automatización</span>
+                    <div className="text-xs text-gray-500">
+                      <span className="line-through">$500K - $1.5M</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-green-600">$375K - $1.1M</div>
+                    <div className="text-xs text-green-500">¡Ahorro $375K!</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-lg border border-orange-200">
+                <div className="flex items-center justify-center space-x-2 text-orange-800">
+                  <span>⏰</span>
+                  <span className="font-bold text-sm">Oferta válida hasta fin de año</span>
+                </div>
+              </div>
+              
+              <div className="mt-6 flex flex-col gap-3">
+                <a
+                  href="/servicios"
+                  className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-bold py-4 px-6 rounded-xl text-center hover:from-orange-600 hover:to-yellow-600 transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                  🎯 Ver Todos los Paquetes PyME
+                </a>
+                <button
+                  onClick={() => setChatOpen(true)}
+                  className="w-full border-2 border-orange-500 text-orange-600 font-bold py-3 px-6 rounded-xl hover:bg-orange-50 transition-all duration-300"
+                >
+                  💬 Consultar mi Descuento
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Requisitos */}
+          <div className="mt-12 bg-white rounded-xl p-6 shadow-lg">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+              📋 ¿Calificas para el descuento PyME?
+            </h3>
+            <div className="grid md:grid-cols-3 gap-4 text-center">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-xl">👥</span>
+                </div>
+                <span className="font-semibold text-gray-700">Menos de 50 empleados</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-xl">🇨🇱</span>
+                </div>
+                <span className="font-semibold text-gray-700">Empresa chilena</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-xl">🚀</span>
+                </div>
+                <span className="font-semibold text-gray-700">Primera vez con Vyntra</span>
               </div>
             </div>
           </div>

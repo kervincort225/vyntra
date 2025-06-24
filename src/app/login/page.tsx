@@ -65,12 +65,6 @@ export default function LoginPage() {
         />
         {error && <div className="text-red-500 text-sm text-center">{error}</div>}
         
-        <div className="bg-gray-50 p-3 rounded-lg text-xs text-gray-600">
-          <p className="font-semibold mb-2">Credenciales de prueba:</p>
-          <p><strong>Admin:</strong> admin@vyntra.com / admin123</p>
-          <p><strong>Cliente:</strong> juan@empresa.com / client123</p>
-        </div>
-        
         <button type="submit" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full py-2 font-semibold hover:scale-105 transition-transform">Acceder</button>
         
         <div className="text-center">
